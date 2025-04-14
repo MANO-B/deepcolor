@@ -122,7 +122,7 @@ class VaeSmDataManagerMB():
         self.test_x = x[test_idx]
         self.test_xnorm_mat = xnorm_mat[test_idx]
         self.test_batch_idx = batch_idx[test_idx]
-        self.train_eds = VaeSmDataSet(x[train_idx], xnorm_mat[train_idx], batch_idx[train_idx])
+        self.train_eds = VaeSmDataSetMB(x[train_idx], xnorm_mat[train_idx], batch_idx[train_idx])
         self.train_loader = torch.utils.data.DataLoader(
             self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, drop_last=True, pin_memory=True)
 
