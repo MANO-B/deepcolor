@@ -134,11 +134,15 @@ class VaeSmDataManagerMB():
 class VaeSmDataManagerDPP(VaeSmDataManager):
     def __init__(self, gpu, gpu_num, *args, **kwargs):
         super(VaeSmDataManagerDPP, self).__init__(*args, **kwargs)
-        self.train_sampler = torch.utils.data.distributed.DistributedSampler(
-            self.train_eds, num_replicas=gpu_num, rank=gpu)
-        self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=args[2], shuffle=False, num_workers=0, drop_last=True, pin_memory=True, sampler=self.train_sampler)
+        if gpu_num > 1:
+            self.train_sampler = torch.utils.data.distributed.DistributedSampler(
+                self.train_eds, num_replicas=gpu_num, rank=gpu)
+            self.train_loader = torch.utils.data.DataLoader(
+                self.train_eds, batch_size=args[2], shuffle=False, num_workers=0, drop_last=True, pin_memory=True, sampler=self.train_sampler)
+        else:
+            self.train_loader = torch.utils.data.DataLoader(
+                self.train_eds, batch_size=args[2], shuffle=True, num_workers=0, drop_last=True, pin_memory=True)
         
     def initialize_loader(self, batch_size):
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=False, num_workers=0, drop_last=True, pin_memory=True, sampler=self.train_sampler)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=0, drop_last=True, pin_memory=True)
