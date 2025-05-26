@@ -78,11 +78,11 @@ class VaeSmDataManager():
         else:
             self.train_eds = VaeSmDataSet(x[train_idx], xnorm_mat[train_idx])
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, drop_last=True, pin_memory=True)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=True)
 
-    def initialize_loader(self, batch_size, num_workers=2):
+    def initialize_loader(self, batch_size, num_workers=12):
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, drop_last=True, pin_memory=True)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=True)
     
     def get_item(self, idxs):
         if not self.b is None:
@@ -124,11 +124,11 @@ class VaeSmDataManagerMB():
         self.test_batch_idx = batch_idx[test_idx]
         self.train_eds = VaeSmDataSetMB(x[train_idx], xnorm_mat[train_idx], batch_idx[train_idx])
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, drop_last=True, pin_memory=True)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=True)
 
-    def initialize_loader(self, batch_size, num_workers=2):
+    def initialize_loader(self, batch_size, num_workers=12):
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, drop_last=True, pin_memory=True)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=True)
 
 
 class VaeSmDataManagerDPP(VaeSmDataManager):
