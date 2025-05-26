@@ -78,11 +78,11 @@ class VaeSmDataManager():
         else:
             self.train_eds = VaeSmDataSet(x[train_idx], xnorm_mat[train_idx])
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=True)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False)
 
     def initialize_loader(self, batch_size, num_workers=12):
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=True)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False)
     
     def get_item(self, idxs):
         if not self.b is None:
@@ -124,11 +124,11 @@ class VaeSmDataManagerMB():
         self.test_batch_idx = batch_idx[test_idx]
         self.train_eds = VaeSmDataSetMB(x[train_idx], xnorm_mat[train_idx], batch_idx[train_idx])
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=True)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False)
 
     def initialize_loader(self, batch_size, num_workers=12):
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=True)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False)
 
 
 class VaeSmDataManagerDPP(VaeSmDataManager):
@@ -138,11 +138,11 @@ class VaeSmDataManagerDPP(VaeSmDataManager):
             self.train_sampler = torch.utils.data.distributed.DistributedSampler(
                 self.train_eds, num_replicas=gpu_num, rank=gpu)
             self.train_loader = torch.utils.data.DataLoader(
-                self.train_eds, batch_size=args[2], shuffle=False, num_workers=0, drop_last=True, pin_memory=True, sampler=self.train_sampler)
+                self.train_eds, batch_size=args[2], shuffle=False, num_workers=0, drop_last=True, pin_memory=False, sampler=self.train_sampler)
         else:
             self.train_loader = torch.utils.data.DataLoader(
-                self.train_eds, batch_size=args[2], shuffle=True, num_workers=0, drop_last=True, pin_memory=True)
+                self.train_eds, batch_size=args[2], shuffle=True, num_workers=0, drop_last=True, pin_memory=False)
         
     def initialize_loader(self, batch_size):
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=0, drop_last=True, pin_memory=True)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=0, drop_last=True, pin_memory=False)
