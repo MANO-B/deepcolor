@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 class VaeSmExperiment:
     def __init__(self, model_params, lr, x, s, test_ratio, x_batch_size, s_batch_size, num_workers, b=None, validation_ratio=0.1, device='auto', use_poisson=False):
         if device == 'auto':
-            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            self.device = torch.device('cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu')
         else:
             self.device = torch.device(device)
         self.sedm = VaeSmDataManager(s, test_ratio, x_batch_size, num_workers, validation_ratio=validation_ratio, b=b)
@@ -141,7 +141,7 @@ class VaeSmExperiment:
 class VaeSmExperimentMB(VaeSmExperiment):
     def __init__(self, model_params, lr, x, s, test_ratio, x_batch_size, s_batch_size, num_workers, validation_ratio=0.1, device='auto'):
         if device == 'auto':
-            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            self.device = torch.device('cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu')
         else:
             self.device = torch.device(device)
         self.sedm = VaeSmDataManagerMB(s, torch.zeros(s.shape[0]), test_ratio, s_batch_size, num_workers, validation_ratio=validation_ratio)
