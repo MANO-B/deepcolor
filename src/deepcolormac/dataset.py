@@ -123,13 +123,17 @@ class VaeSmDataManagerMB():
         self.test_xnorm_mat = xnorm_mat[test_idx]
         self.test_batch_idx = batch_idx[test_idx]
         self.train_eds = VaeSmDataSetMB(x[train_idx], xnorm_mat[train_idx], batch_idx[train_idx])
+        if torch.backends.mps.is_available():
+            self.device = torch.device("mps")
+        else:
+            self.device = torch.device("cpu")
+        generator = torch.Generator(device=self.device)
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False, generator=generator)
 
     def initialize_loader(self, batch_size, num_workers=12):
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False)
-
+        self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False, generator=torch.Generator(device=self.device))
 
 class VaeSmDataManagerDPP(VaeSmDataManager):
     def __init__(self, gpu, gpu_num, *args, **kwargs):
