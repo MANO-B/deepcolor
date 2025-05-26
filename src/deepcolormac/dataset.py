@@ -71,6 +71,10 @@ class VaeSmDataManager():
         # self.test_x = x[test_idx]
         # self.validation_xnorm_mat = xnorm_mat[validation_idx]
         # self.test_xnorm_mat = xnorm_mat[test_idx]
+        if torch.backends.mps.is_available():
+            self.device = torch.device("mps")
+        else:
+            self.device = torch.device("cpu")
         if not b is None:
             # self.validation_b = b[validation_idx]
             # self.test_b = b[test_idx]
@@ -78,11 +82,11 @@ class VaeSmDataManager():
         else:
             self.train_eds = VaeSmDataSet(x[train_idx], xnorm_mat[train_idx])
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False, generator=torch.Generator(device=self.device))
 
     def initialize_loader(self, batch_size, num_workers=12):
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False, generator=torch.Generator(device=self.device))
     
     def get_item(self, idxs):
         if not self.b is None:
@@ -127,9 +131,8 @@ class VaeSmDataManagerMB():
             self.device = torch.device("mps")
         else:
             self.device = torch.device("cpu")
-        generator = torch.Generator(device=self.device)
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False, generator=generator)
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False, generator=generator=torch.Generator(device=self.device))
 
     def initialize_loader(self, batch_size, num_workers=12):
         self.train_loader = torch.utils.data.DataLoader(
