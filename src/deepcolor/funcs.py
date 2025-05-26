@@ -16,4 +16,8 @@ def calc_nb_loss(ld, norm_mat, theta, obs):
     p = ld / (ld + theta)
     p_z = dist.NegativeBinomial(theta, p)
     l = - p_z.log_prob(obs).clamp(min=-10)
+    print(f"p valur: {p}")
+    print(f"theta_x raw output from vaesm: {theta}")
+    print(f"norm_mat: {norm_mat}")
+    print(f"ld: {ld}")
     return l        
