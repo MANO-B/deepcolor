@@ -95,7 +95,7 @@ def estimate_spatial_distribution(
         }, batch_label=None
     ):
     if device == None:
-        device = 'cpu' if torch.cuda.is_available() else 'cpu' if torch.backends.mps.is_available() else 'cpu'
+        device = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
     # make data set 
     sp_adata.obs_names_make_unique()
     sc_adata.obs_names_make_unique()
