@@ -35,6 +35,9 @@ class VaeSmExperiment:
     def elbo_loss(self, batch, s, snorm_mat):
         x, xnorm_mat, *others = batch
         xz, qxz, xld, p, sld, theta_x, theta_s = self.vaesm(batch)
+        print(f"theta_x raw output from vaesm: {theta_x}")
+        print(f"Is theta_x NaN? {torch.isnan(theta_x).any()}")
+        print(f"theta_x min: {torch.min(theta_x)}, max: {torch.max(theta_x)}")
         elbo_loss = 0
         if self.mode != 'sp':        
             # kld of pz and qz
