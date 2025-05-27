@@ -131,7 +131,7 @@ class VaeSmDataManagerMB():
         self.train_eds = VaeSmDataSetMB(x[train_idx], xnorm_mat[train_idx], batch_idx[train_idx])
         if torch.backends.mps.is_available():
             self.device = torch.device("cpu")
-        else if torch.cuda.is_available():
+        elif torch.cuda.is_available():
             self.device = torch.device("cuda")
         else:
             self.device = torch.device("cpu")
