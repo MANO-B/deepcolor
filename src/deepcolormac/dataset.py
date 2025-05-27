@@ -136,7 +136,7 @@ class VaeSmDataManagerMB():
         else:
             self.device = torch.device("cpu")
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, drop_last=True, pin_memory=False, generator=generator=torch.Generator())
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, drop_last=True, pin_memory=False, generator=torch.Generator())
 
     def initialize_loader(self, batch_size, num_workers=0):
         self.train_loader = torch.utils.data.DataLoader(
