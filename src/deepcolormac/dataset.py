@@ -72,8 +72,8 @@ class VaeSmDataManager():
         # self.validation_xnorm_mat = xnorm_mat[validation_idx]
         # self.test_xnorm_mat = xnorm_mat[test_idx]
         if torch.backends.mps.is_available():
-            self.device = torch.device("mps")
-        else if torch.cuda.is_available():
+            self.device = torch.device("cpu")
+        elif torch.cuda.is_available():
             self.device = torch.device("cuda")
         else:
             self.device = torch.device("cpu")
