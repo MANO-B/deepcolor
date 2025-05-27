@@ -84,7 +84,7 @@ def extract_mapping_info(vaesm_exp, sc_adata, sp_adata):
 
 
 def estimate_spatial_distribution(
-        sc_adata, sp_adata, param_save_path, layer_name='count', first_epoch=100, second_epoch=100, lr=0.01, val_ratio=0.01, test_ratio=0.01, device=None, num_workers=12,
+        sc_adata, sp_adata, param_save_path, layer_name='count', first_epoch=100, second_epoch=100, lr=0.01, val_ratio=0.01, test_ratio=0.01, device=None, num_workers=0,
         x_batch_size=1000, s_batch_size=100, use_poisson=False, 
         model_params = {
             "x_dim": 100,
