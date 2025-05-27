@@ -73,6 +73,8 @@ class VaeSmDataManager():
         # self.test_xnorm_mat = xnorm_mat[test_idx]
         if torch.backends.mps.is_available():
             self.device = torch.device("mps")
+        else if torch.cuda.is_available():
+            self.device = torch.device("cuda")
         else:
             self.device = torch.device("cpu")
         if not b is None:
@@ -82,11 +84,11 @@ class VaeSmDataManager():
         else:
             self.train_eds = VaeSmDataSet(x[train_idx], xnorm_mat[train_idx])
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False, generator=torch.Generator(device=self.device))
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="Spawn", drop_last=True, pin_memory=False, generator=torch.Generator(device=self.device))
 
     def initialize_loader(self, batch_size, num_workers=12):
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False, generator=torch.Generator(device=self.device))
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="Spawn", drop_last=True, pin_memory=False, generator=torch.Generator(device=self.device))
     
     def get_item(self, idxs):
         if not self.b is None:
@@ -132,11 +134,11 @@ class VaeSmDataManagerMB():
         else:
             self.device = torch.device("cpu")
         self.train_loader = torch.utils.data.DataLoader(
-            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False, generator=generator=torch.Generator(device=self.device))
+            self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="Spawn", drop_last=True, pin_memory=False, generator=generator=torch.Generator(device=self.device))
 
     def initialize_loader(self, batch_size, num_workers=12):
         self.train_loader = torch.utils.data.DataLoader(
-        self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="fork", drop_last=True, pin_memory=False, generator=torch.Generator(device=self.device))
+        self.train_eds, batch_size=batch_size, shuffle=True, num_workers=num_workers, multiprocessing_context="Spawn", drop_last=True, pin_memory=False, generator=torch.Generator(device=self.device))
 
 class VaeSmDataManagerDPP(VaeSmDataManager):
     def __init__(self, gpu, gpu_num, *args, **kwargs):
